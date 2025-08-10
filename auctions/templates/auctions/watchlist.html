@@ -1,0 +1,108 @@
+{% extends "auctions/layout.html" %} 
+
+{% block title %}My Wishlist{% endblock %}
+
+{% block body %}
+<div id="container">
+  <div class="container-1 mt-4">
+    <h2>My Wishlist</h2>
+    <hr class="rule" />
+
+    {% for listing in watchlist %}
+    <div class="watchlist-container">
+      <div class="watchlist-section">
+        <div class="watchlist-image">
+          <img src="{{ listing.image_url }}" alt="{{ listing.title }}" />
+        </div>
+
+        <div class="step-2">
+          <a href="{% url 'auctions:listing page' listing.id %}" class="text-dark">
+            <h3><i>{{ listing.title }}</i></h3>
+          </a>
+          <i>by: {{ listing.created_by }}</i>
+          <p>Created: {{ listing.created_on }}</p>
+          <p>${{ listing.starting_bid_price }}</p>
+          <p>
+            <b>Est:</b> ${{ listing.estimated_price_min }} USD -
+            {{ listing.estimated_price_max }} USD
+          </p>
+
+          {% if listing.is_active %}
+          <span class="badge bg-success px-3 py-2">
+            <i class="bi bi-circle-fill me-1"></i> Auction is Live
+          </span>
+          {% else %}
+          <span class="badge bg-danger px-3 py-2">
+            <i class="bi bi-x-circle-fill me-1"></i> Auction Closed
+          </span>
+          {% endif %}
+
+          <form action="{% url 'auctions:watchlist toggle' listing.id %}" method="post" class="mt-2">
+            {% csrf_token %}
+            <button type="submit" class="submit-btn">Remove from Watchlist</button>
+          </form>
+          <div>
+                <div class="card mb-3">
+                    <div class="l-description card-header">
+                        <h3>Comments</h3>
+                    </div>
+                    <div class="card-body comment-box">
+                        
+                        {% for comment in comments %}
+                         <!-- Placeholder comments -->
+                         <p><strong>Rono</strong> (Aug 09, 2025 18:15):<br>Really love the quality of this item!</p>
+                         <p><strong>SarahM</strong> (Aug 09, 2025 18:27):<br>Arrived faster than expected, very satisfied.</p>
+                         <p><strong>Admin</strong> (Aug 09, 2025 18:35):<br>The build feels premium and durable.</p>
+                         <p><strong>Lily_88</strong> (Aug 09, 2025 18:49):<br>Great value for the price, would recommend.</p>
+                         <p><strong>MikeP</strong> (Aug 09, 2025 19:02):<br>Exactly as described, works perfectly.</p>
+                         <p><strong>ShopQueen</strong> (Aug 09, 2025 19:10):<br>Looks even better in person, thank you!</p>
+                         <p><strong>AlexR</strong> (Aug 09, 2025 19:18):<br>Excellent customer service and product quality.</p>
+                         <p><strong>NoraW</strong> (Aug 09, 2025 19:25):<br>Stylish and practical, I’m impressed.</p>
+                         <p><strong>GamerX</strong> (Aug 09, 2025 19:33):<br>Perfect for my setup, fits like a glove.</p>
+                         <p><strong>TravelBug</strong> (Aug 09, 2025 19:41):<br>Took it on my trip and it was super useful.</p>
+                         <div style="border-bottom: 1px solid #ccc; margin-bottom: 10px">
+                            <strong>{{ comment.user.username }}</strong> ({{comment.created|date:"M d, Y H:i" }}):<br />
+                            <p>{{ comment.text }}</p>
+                         </div>
+                        {% empty %}
+                        <p>No comments yet.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            <div>
+              <form
+                action="{% url 'auctions:comment' listing.id %}"
+                method="post"
+              >
+                {% csrf_token %}
+                <textarea class="form-control"
+                  name="text"
+                  style="width: 100%;"
+                  placeholder="Add comment..."
+                  required
+                ></textarea>
+                <button type="submit" class="login-btn">Comment</button>
+              </form>
+            </div>
+            </div>        
+        </div>
+      </div>
+      <div class="watchlist-description mt-3">
+            <h3>Item overview</h3>
+            <hr class="rule" />
+            <div class="l-description">
+              <h4>Description</h4>
+              <p>{{ listing.description }}</p>
+            </div>
+          </div>
+    </div>
+
+    {% empty %}
+    <div class="alert alert-info mt-3">
+      <strong>Your Watchlist is Currently Empty!</strong>
+    </div>
+    {% endfor %}
+
+  </div>
+</div>
+{% endblock %}

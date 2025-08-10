@@ -1,0 +1,38 @@
+{% extends "auctions/layout.html" %}
+
+{% load static %}
+
+{% block title %}
+Categories 
+{% endblock %} 
+
+{% block body %}
+<div id="container">
+  <div class="container-1 mt-4">
+    <h2>Categories</h2>
+    <hr class="rule">
+    <div class="categories-grid">
+      {% for category in categories %}
+      <div class="category-item">
+        <div class="circle-image">
+          <a href="{% url 'auctions:category listings' category.name %}">
+            <img
+            src="{% static 'auctions/images/categories/' %}{{ category.slug }}.jpg"
+            alt="{{ category.name }}"
+          />
+          </a>
+        </div>
+        <div class="category-name">
+          <a href="{% url 'auctions:category listings' category.name %}">
+            {{ category.name }}
+          </a>
+        </div>
+      </div>
+      {% empty %}
+      <p>No categories available.</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

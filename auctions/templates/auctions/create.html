@@ -1,0 +1,68 @@
+{%extends "auctions/layout.html"%}
+
+{% block title %}
+Create Listings
+{% endblock %}
+
+{% block body %}
+<div id="container">    
+    <div class="create-form container mt-4">
+    <div class="auth_message">
+        <h2>Post an item for auctioning.</h2>
+        <hr class="rule">
+    </div>
+    <form action="{% url 'auctions:create listing' %}" method="post" class="needs-validation" novalidate>
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label for="{{ form.title.id_for_label }}" class="form-label">Title</label>
+            {{ form.title }}
+        </div>
+
+        <div class="mb-3">
+            <label for="{{ form.description.id_for_label }}" class="form-label">Description</label>
+            {{ form.description }}
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="{{ form.estimated_price_min.id_for_label }}" class="form-label">Estimated Price (Min)</label>
+                {{ form.estimated_price_min }}
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="{{ form.estimated_price_max.id_for_label }}" class="form-label">Estimated Price (Max)</label>
+                {{ form.estimated_price_max }}
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="{{ form.starting_bid_price.id_for_label }}" class="form-label">Starting Bid Price</label>
+            {{ form.starting_bid_price }}
+        </div>
+
+        <div class="mb-3">
+            <label for="{{ form.image_url.id_for_label }}" class="form-label">Image URL</label>
+            {{ form.image_url }}
+        </div>
+
+       <!-- <div class="form-floating mb-3">
+            <label for="{{ form.category.id_for_label }}" class="form-label" >Category</label>
+            {{ form.category }}
+        </div> -->
+       <div class="form-floating mb-3">
+        <label for="{{ form.category.id_for_label }}" class="form-label">Category</label>
+        <select name="category" id="{{ form.category.id_for_label }}" class="form-select" required>
+        <option value="">Select Category</option>
+        {% for value, label in form.category.field.choices %}
+            <option value="{{ value }}">{{ label }}</option>
+        {% endfor %}
+        </select>
+       </div>
+
+        <button type="submit" class="login-btn">Create Listing</button>
+    </form>
+    </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "auctions/auth.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block body %}
+<div class="auth_main-container">
+<div class="auth_content">
+    <div class="auth_message">
+        <h2>Sign in to your account.</h2>
+    </div>
+
+    {% if message %}
+        <div>{{ message }}</div>
+    {% endif %}
+
+    <form action="{% url 'auctions:login' %}" method="post">
+        {% csrf_token %}
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="username" name="username" placeholder="Username" autofocus>
+            <label for="username">Username</label>
+        </div>
+        
+        <div class="form-floating mb-3">
+            <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+            <label for="password">Password</label>
+        </div>
+        <button class="login-btn" type="submit">Log in</button> 
+    </form>
+    <div class="signin_message">
+    Don't have an account? <a class="auth-link" href="{% url 'auctions:register' %}">Create account.</a>
+    </div>
+</div>
+</div>
+
+{% endblock %}

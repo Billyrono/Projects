@@ -1,0 +1,46 @@
+{% extends "auctions/layout.html" %}
+{% block title %}{{ category.name }}{% endblock %}
+{% block body %}
+<div id="container">
+    <div class="container-1 mt-4">
+    <h2>{{ category.name }} auctions.</h2>
+    <hr class="rule">
+    <div>
+        {% for listing in listings %}
+        <div class="listing-card">
+            <div class="listing-image">
+                <a href="{% url 'auctions:listing page' listing.id %}">
+                    <img src="{{ listing.image_url }}">
+                </a>
+            </div>
+            <div class="listing-info">
+                <a href="{% url 'auctions:listing page' listing.id %}" style="color: black;">
+                    <h3>{{ listing.title }}</h3>
+                </a>
+                <p> ${{ listing.starting_bid_price }}</p>
+                <i>by: {{ listing.created_by }}</i>
+                <p>Created: {{ listing.created_on }}</p>
+            </div>
+            <div class="bid-link">
+            <div style="font-size: 17px;"><i class="fa-solid fa-rss"></i> Live Auction</a></div>
+            <p></p>
+            <a href="{% url 'auctions:listing page' listing.id %}">
+                <button type="submit" class="login-btn">Enter live biding</button>
+            </a>
+            {% if user.is_authenticated %}
+            <p><strong>{{ listing.bids.count }}</strong>  Active bids</p>
+            {% else %}
+            <div>
+                <a class="nav-link" href="{% url 'auctions:login' %}"> Sign in to place bid</a>
+            </div>
+            {% endif %}
+        </div>
+        </div>
+        {% empty %}
+            <p>No active listings in this category.</p>
+        {% endfor %}
+    </div>
+</div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "auctions/layout.html" %}
+{% block body %}
+<div id="container">
+<div class="container-1 mt-4">
+<div class="page-title">
+    <h2>Active Listings</h2>
+    <hr class="rule">
+</div>
+<div class="page-container">
+    <div>
+    {% for listing in listings %}
+    <div class="listing-card">
+        <div class="listing-image">
+           <a href="{% url 'auctions:listing page' listing.id %}">
+            <img src="{{ listing.image_url }}">
+           </a>
+        </div>
+        <div class="listing-info">
+            <a href="{% url 'auctions:listing page' listing.id %}" style="color: black;">
+                <h3>{{ listing.title }}</h3>
+            </a>
+            <p> ${{ listing.starting_bid_price }}</p>
+            <i>by: {{ listing.created_by }}</i>
+            <p>Created: {{ listing.created_on }}</p>
+        </div>
+        <div class="bid-link">
+            {% if listing.is_active %}
+             <div style="font-size: 17px;"><i class="fa-solid fa-rss"></i> Live Auction.</a></div>
+            <p></p>
+            {% else %}
+             <div style="font-size: 17px;"><i class="fa-solid fa-heart-crack"></i> Auction closed.</a></div>
+            <p></p>
+            {% endif %}
+            <a href="{% url 'auctions:listing page' listing.id %}">
+                <button type="submit" class="login-btn">Enter live biding.</button>
+            </a>
+            {% if listing.is_active %}
+            {% if user.is_authenticated %}
+            <p><strong>{{ listing.bids.count }}</strong>  Active bids.</p>
+            {% else %}
+            <div>
+                <a class="nav-link" href="{% url 'auctions:login' %}"> Sign in to place bid.</a>
+            </div>
+            {% endif %}
+            {% else %}
+            <p><strong>{{ listing.bids.count }}</strong>  Bids were placed.</p>
+            {% endif %}
+        </div>
+    </div>
+    {% empty %}
+    <p>No Active Listings Found!</p>
+    {% endfor %}
+    </div>
+</div>
+</div>
+</div>
+
+{% endblock %}
