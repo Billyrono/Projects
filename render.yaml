@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: commerce-app
+    env: python
+    region: oregon  
+    branch: master  
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn commerce.wsgi
+    autoDeploy: true
+    healthCheckPath: /
+    envVars:
+      - key: DEBUG
+        value: 'False'
+      - key: DJANGO_SETTINGS_MODULE
+        value: commerce.settings
